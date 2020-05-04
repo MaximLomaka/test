@@ -1,0 +1,21 @@
+version: '3.7'
+
+services:
+  web:
+    build: ./demo
+    command: uvicorn demo.asgi:application --port 8000
+    hostname: web
+    volumes:
+       - ./demo/:/usr/src/app/
+    env_file:
+      - ./.env.dev
+
+    expose:
+      - 8000
+ 
+  nginx:
+    build: ./nginx
+    ports:
+      - 80:80
+    depends_on:
+      - web
